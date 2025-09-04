@@ -116,10 +116,6 @@ def test_choice_text_boundaries():
     ok = question.add_choice('x' * 100)
     assert ok.text == 'x' * 100
 
-
-# Fixtures
-import pytest
-
 @pytest.fixture
 def question_with_choices():
     q = Question(title='question with choices', max_selections=2)
