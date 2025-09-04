@@ -115,3 +115,27 @@ def test_choice_text_boundaries():
         question.add_choice('x' * 101)
     ok = question.add_choice('x' * 100)
     assert ok.text == 'x' * 100
+
+
+# Fixtures
+import pytest
+
+@pytest.fixture
+def question_with_choices():
+    q = Question(title='question with choices', max_selections=2)
+    a = q.add_choice('A', is_correct=True)
+    b = q.add_choice('B', is_correct=False)
+    c = q.add_choice('C', is_correct=True)
+    return q, a, b, c
+
+
+def test_fixture_returns_expected_choice_count(question_with_choices):
+    q, a, b, c = question_with_choices
+    assert [ch.id for ch in q.choices] == [a.id, b.id, c.id]
+    assert len(q.choices) == 3
+
+
+def test_correct_selected_choices_with_fixture(question_with_choices):
+    q, a, b, c = question_with_choices
+    result = q.correct_selected_choices([a.id, b.id])
+    assert result == [a.id]
